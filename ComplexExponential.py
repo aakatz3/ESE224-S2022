@@ -13,8 +13,6 @@ class ComplexExponential(object):
 
         self.e_kN : Final = exp(2j * pi * k * self.ns / N) / (sqrt(N) if not Normalized else 1)
 
-
-        # apparently these names have to mirror e_kN? Might be a jypyter thing, idfk. f* numpy rn
         # Vector containing real elements of the complex exponential
         #self.e_kN_real = self.e_kN.real
 

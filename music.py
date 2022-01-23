@@ -36,7 +36,6 @@ def write_and_play(file: Path, f_samp: int, samps: nparray):
     :param samps array of samples of the audio"""
     wavfile.write(file.absolute(), f_samp, samps.astype(float32))
     play(str(file.absolute()))
-    #play(AudioSegment.from_wav(file.absolute()))
 
 
 def midi_number_to_piano_key(n):
@@ -50,11 +49,14 @@ def piano_key_to_frequency(n):
     return pow(2, (n - 49) / 12) * 440
 
 def read_midi_to_keys(file : Path):
-    # This doesn't respect rests but its good enough
     midi = PrettyMIDI(str(file))
     Ts = list()
     keys = list()
+    delays = list()
+    last_end = 0
     for note in midi.instruments[0].notes:
         Ts.append(note.duration)
+        delays.append(max(0, note.start - last_end))
+        last_end = note.end
         keys.append(midi_number_to_piano_key(note.pitch))
-    return (keys, Ts)
+    return (keys, Ts, delays)

@@ -172,16 +172,17 @@ if __name__ == '__main__':
     samples = q_33(fs)
     write_and_play(Path(make_qdir('q_33'), '88keys.wav'), fs, samples)
 def q_34(fs, file : Path):
-    (keys, Ts) = read_midi_to_keys(file)
+    (keys, Ts, delays) = read_midi_to_keys(file)
     freqs = piano_key_to_frequency(np.asarray(keys))
-    samples = np.arange(1, 1)
+    samples = list()
     for i in range(0, len(freqs)):
         cpx_cos = cosine(fs, Ts[i], freqs[i])[0]
-        samples = np.concatenate([samples, np.zeros([int(floor(0.001*fs))]), cpx_cos])
-    return samples
+        samples.append(np.zeros([int(fs*delays[i])]))
+        samples.append(cpx_cos)
+    return np.concatenate(samples)
 
 if __name__ == '__main__':
-    fs=192000
+    fs=44100
     q_34_dir = make_qdir('q_34')
     write_and_play(Path(q_34_dir, 'happybirthday.wav'), fs, q_34(fs, Path("HappyBirthday.mid")))
     write_and_play(Path(q_34_dir, 'NyanCat.wav'), fs, q_34(fs, Path("NyanCat.mid")))
