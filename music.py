@@ -1,6 +1,5 @@
-from math import floor, ceil
-
-from pretty_midi import PrettyMIDI, Note
+from math import floor
+from pretty_midi import PrettyMIDI
 from numpy import ndarray as nparray, float32 as float32, power as pow, floor
 from ComplexExponential import *
 from pathlib import Path
